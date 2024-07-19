@@ -16,6 +16,15 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+            </div>
+        @endif
     </header>
 
     <div class="container">
@@ -31,7 +40,7 @@
                     <p>Description: {{$reparation->description}} </p>
                     <p>Date de dépôt: {{$reparation->date_depot}} </p>
                     <p>Statut: {{$reparation->statut}} </p>
-                    <button onclick="">Modifier</button>
+                    <button onclick="document.getElementById('updateRepairModal{{$reparation->id}}').style.display='block'">Modifier</button>
                 </li>
                 @endforeach
             </ul>
@@ -56,11 +65,11 @@
                 <form action="{{ route('clients.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="nom">Nom:</label>
+                        <label for="nom">Nom:</label><br>
                         <input type="text" class="form-control" id="nom" name="nom" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email:</label>
+                        <label for="email">Email:</label><br>
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -86,15 +95,15 @@
             <form action="{{ route('reparations.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="appareil">Appareil:</label>
+                    <label for="appareil">Appareil:</label><br>
                     <input type="text" class="form-control" id="appareil" name="appareil" required>
                 </div>
                 <div class="form-group">
-                    <label for="description">Description:</label>
+                    <label for="description">Description:</label><br>
                     <textarea class="form-control" id="description" name="description" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="client_id">Client:</label>
+                    <label for="client_id">Client:</label><br>
                     <select class="form-control" id="client_id" name="client_id" required>
                         <option value="">Sélectionnez un client</option>
                         @foreach($clients as $client)
@@ -106,16 +115,40 @@
             </form>
         </div>
     </div>
-
-        <div id="" class="modal">
+    
+    @foreach($reparations as $reparation)
+        <div id="updateRepairModal{{$reparation->id}}" class="modal">
             <div class="modal-content">
-                <span class="close" onclick="">
+                <span class="close" onclick="document.getElementById('updateRepairModal{{$reparation->id}}').style.display='none'">
                     &times;</span>
                 <h2>Modifier Réparation</h2>
-                <form action="" method="post">
+                <form action="{{ route('reparations.update', ['id' => $reparation->id]) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="appareil">Appareil:</label><br>
+                        <input type="text" class="form-control" id="appareil" name="appareil" required value="{{$reparation->appareil}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label><br>
+                        <textarea class="form-control" id="description" name="description" required >
+                            {{$reparation->description}}
+                        </textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="statut">Statut:</label><br>
+                        <select name="statut" id="statut">
+                            <option value="À faire" @if($reparation->statut === "À faire") selected @endif>À faire</option>
+                            <option value="En cours" @if($reparation->statut === "En cours") selected @endif>En cours</option>
+                            <option value="Terminé" @if($reparation->statut === "Terminé") selected @endif>Terminé</option>
+                            <option value="Repris par le client" @if($reparation->statut === "Repris par le client") selected @endif>Repris par le client</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
                 </form>
             </div>
         </div>
+    @endforeach
 
     <footer>
         <p>&copy; 2024 Réparateur Expert. Tous droits réservés.</p>
