@@ -11,6 +11,11 @@
         <h1>Réparateur Expert</h1>
         <button onclick="document.getElementById('addClientModal').style.display='block'">Ajouter un Client</button>
         <button onclick="document.getElementById('addRepairModal').style.display='block'">Ajouter une Réparation</button>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
     </header>
 
     <div class="container">
@@ -36,9 +41,30 @@
     <div id="addClientModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="document.getElementById('addClientModal').style.display='none'">&times;</span>
-            <h2>Ajouter un Client</h2>
-            <form action="" method="post">
-            </form>
+            <h1>Ajouter un Client</h1>
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('index.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nom">Nom:</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
         </div>
     </div>
 

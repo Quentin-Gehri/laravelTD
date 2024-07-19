@@ -8,6 +8,8 @@ class Clients extends Model
 {
     protected $table = 'clients';
 
+    protected $fillable = ['nom', 'email']; 
+
     public function reparations()
     {
         return $this->hasMany(Reparations::class, 'client_id');
