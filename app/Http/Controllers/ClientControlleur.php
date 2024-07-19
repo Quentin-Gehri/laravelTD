@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class ClientControlleur extends Controller
 {
-
     public function store(Request $request)
     {
         $request->validate([

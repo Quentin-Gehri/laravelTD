@@ -6,5 +6,6 @@ use App\Http\Controllers\ClientControlleur;
 
 Route::get('/', [ReparationControlleur::class, 'index'])->name('index');
 
-Route::post('/clients', [ClientControlleur::class, 'store'])->name('index.store');
+Route::post('/clients', [ClientControlleur::class, 'store'])->name('clients.store');
 
+Route::post('/reparations', [ReparationControlleur::class, 'store'])->name('reparations.store');

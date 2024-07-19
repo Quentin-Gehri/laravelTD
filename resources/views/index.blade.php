@@ -53,7 +53,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('index.store') }}" method="POST">
+                <form action="{{ route('clients.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="nom">Nom:</label>
@@ -72,7 +72,37 @@
         <div class="modal-content">
             <span class="close" onclick="document.getElementById('addRepairModal').style.display='none'">&times;</span>
             <h2>Ajouter une Réparation</h2>
-            <form action="" method="post">
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('reparations.store') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label for="appareil">Appareil:</label>
+                    <input type="text" class="form-control" id="appareil" name="appareil" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" id="description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="client_id">Client:</label>
+                    <select class="form-control" id="client_id" name="client_id" required>
+                        <option value="">Sélectionnez un client</option>
+                        @foreach($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->nom }} - {{ $client->email }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
             </form>
         </div>
     </div>
