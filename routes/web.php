@@ -11,3 +11,5 @@ Route::post('/clients', [ClientControlleur::class, 'store'])->name('clients.stor
 Route::post('/reparations', [ReparationControlleur::class, 'store'])->name('reparations.store');
 
 Route::put('/reparations/update/{id}', [ReparationControlleur::class, 'update'])->name('reparations.update');
+
+Route::post('/reparations/filter', [ReparationControlleur::class, 'filter'])->name('reparations.filter');

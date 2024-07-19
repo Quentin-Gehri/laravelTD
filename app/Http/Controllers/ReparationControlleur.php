@@ -57,6 +57,20 @@ class ReparationControlleur extends Controller
         return redirect()->route('index')->with('success', 'Réparation mise à jour avec succès.');
     }
 
+    public function filter(Request $request)
+    {
+        $request->validate([
+            'statut' => 'required|string|in:À faire,En cours,Terminé,Repris par le client'
+        ]);
 
+        $statut = $request->input('statut');
+        $reparations = Reparations::where('statut', $statut)->with('clients')->get();
+        if ($reparations->isEmpty()) {
+            $statut = "Aucunes réparations";
+        }
+        $clients = Clients::all();  
+
+        return view('index', compact('reparations', 'statut', 'clients'));
+    }
 }
 

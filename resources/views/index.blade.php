@@ -28,8 +28,19 @@
     </header>
 
     <div class="container">
-        <h2>Réparations: </h2>
-            <form action="" method="post">
+        <h2>Réparations: @isset($statut) {{ $statut }} @else Toutes @endif</h2>
+            <form action="{{route('reparations.filter')}}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label for="statut">Statut:</label><br>
+                    <select name="statut" id="statut">
+                        <option value="À faire" @isset($statut) @if($statut === "À faire") selected @endif @endif>À faire</option>
+                            <option value="En cours" @isset($statut) @if($statut === "En cours") selected @endif @endif>En cours</option>
+                            <option value="Terminé" @isset($statut) @if($statut === "Terminé") selected @endif @endif>Terminé</option>
+                            <option value="Repris par le client" @isset($statut) @if($statut === "Repris par le client") selected @endif @endif>Repris par le client</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filtrer</button>
             </form>
         <div class="repair-list-container">
             <ul class="repair-list">

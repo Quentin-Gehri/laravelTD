@@ -112,6 +112,14 @@ form select, form input, form textarea {
     border: 1px solid #ddd;
 }
 
+.modal-content form input, form textarea {
+    width: 99%;
+}
+
+form select{
+    width: 100%;
+}
+
 button {
     background-color: #4CAF50;
     color: white;
